@@ -1,0 +1,153 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://Assets/Ball.png" type="Texture" id=1]
+[ext_resource path="res://Assets/PublicPixel-z84yD.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://Assets/play-icon.png" type="Texture" id=3]
+[ext_resource path="res://Scenes/Menu.gd" type="Script" id=4]
+[ext_resource path="res://Assets/Paddle.png" type="Texture" id=5]
+
+[sub_resource type="DynamicFont" id=1]
+size = 50
+font_data = ExtResource( 2 )
+
+[sub_resource type="Animation" id=3]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 150, 360 ) ]
+}
+
+[sub_resource type="Animation" id=2]
+resource_name = "movement"
+length = 2.0
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5, 1, 1.4, 1.9 ),
+"transitions": PoolRealArray( 0.48297, 0.353554, 0.353554, 1.56917, 1.56917 ),
+"update": 0,
+"values": [ Vector2( 150, 360 ), Vector2( 150, 100 ), Vector2( 150, 500 ), Vector2( 150, 600 ), Vector2( 150, 360 ) ]
+}
+
+[sub_resource type="Animation" id=5]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 1113, 380 ) ]
+}
+
+[sub_resource type="Animation" id=4]
+resource_name = "movement"
+length = 2.0
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.3, 0.6, 1, 1.5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1150, 360 ), Vector2( 1150, 650 ), Vector2( 1150, 400 ), Vector2( 1150, 280 ), Vector2( 1150, 200 ) ]
+}
+
+[node name="Menu" type="Node"]
+script = ExtResource( 4 )
+
+[node name="ViewportContainer" type="ViewportContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="ColorRect" type="ColorRect" parent="ViewportContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0.0784314, 0.129412, 0.14902, 1 )
+
+[node name="PlayButton" type="TextureButton" parent="ViewportContainer"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -106.0
+margin_top = -29.0
+margin_right = 101.0
+margin_bottom = 34.0
+mouse_default_cursor_shape = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Sprite" type="Sprite" parent="ViewportContainer/PlayButton"]
+position = Vector2( 78, 32.495 )
+scale = Vector2( 1.28437, 1.25658 )
+texture = ExtResource( 1 )
+
+[node name="PlyButton" type="Sprite" parent="ViewportContainer/PlayButton"]
+position = Vector2( 78, 31 )
+scale = Vector2( 0.319999, 0.385 )
+texture = ExtResource( 3 )
+
+[node name="Title" type="Label" parent="ViewportContainer/PlayButton"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -737.5
+margin_top = -361.5
+margin_right = 742.5
+margin_bottom = 358.5
+custom_colors/font_color = Color( 0.85098, 0.847059, 0.866667, 1 )
+custom_fonts/font = SubResource( 1 )
+text = "P NG"
+align = 1
+valign = 1
+
+[node name="AnimationNodes" type="Node" parent="ViewportContainer"]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="ViewportContainer/AnimationNodes"]
+root_node = NodePath("LeftNode")
+autoplay = "movement"
+anims/RESET = SubResource( 3 )
+anims/movement = SubResource( 2 )
+
+[node name="LeftNode" type="Sprite" parent="ViewportContainer/AnimationNodes/AnimationPlayer"]
+position = Vector2( 150, 360 )
+scale = Vector2( 0.596774, 0.596774 )
+texture = ExtResource( 5 )
+
+[node name="AnimationPlayer2" type="AnimationPlayer" parent="ViewportContainer/AnimationNodes"]
+root_node = NodePath("RightNode")
+autoplay = "movement"
+anims/RESET = SubResource( 5 )
+anims/movement = SubResource( 4 )
+
+[node name="RightNode" type="Sprite" parent="ViewportContainer/AnimationNodes/AnimationPlayer2"]
+position = Vector2( 1113, 380 )
+scale = Vector2( 0.596774, 0.596774 )
+texture = ExtResource( 5 )
+
+[connection signal="mouse_entered" from="ViewportContainer/PlayButton" to="." method="_on_PlayButton_mouse_entered"]
+[connection signal="mouse_exited" from="ViewportContainer/PlayButton" to="." method="_on_PlayButton_mouse_exited"]
+[connection signal="pressed" from="ViewportContainer/PlayButton" to="." method="_on_PlayButton_pressed"]
